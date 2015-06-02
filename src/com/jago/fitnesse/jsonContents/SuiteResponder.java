@@ -45,16 +45,10 @@ public class SuiteResponder implements SecureResponder {
 
 	private JSONObject buildJson(WikiPage page) {
 		JSONObject json = new JSONObject();
-		json.put("root", parsePage(page));
-		return json;
-	}
-
-	private JSONObject parsePage(WikiPage page) {
-		JSONObject json = new JSONObject();
 		json.put(PAGE_NAME, page.getName());
 		json.put(PAGE_TYPE, getCheckedAttribute(page.getData(), PageData.PAGE_TYPE_ATTRIBUTES));
 		for (int i = 0; i < page.getChildren().size(); i++) {
-			json.append(PAGE_CHILDS, parsePage(page.getChildren().get(i)));			
+			json.append(PAGE_CHILDS, buildJson(page.getChildren().get(i)));			
 		}
 		return json;
 	}

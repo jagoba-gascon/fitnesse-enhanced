@@ -51,11 +51,4 @@
 		</plugins>
 	</build>
 
-	<distributionManagement>
-		<repository>
-			<id>local.repo</id>
-			<name>Local Repository</name>
-			<url>${user.home}/.m2/repository</url>
-		</repository>
-	</distributionManagement>
 </project>

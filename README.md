@@ -1,10 +1,10 @@
 # fitnesse-json-contents
-This responder prints the directory structure below the current folder in JSON format.
+This responder prints the directory structure (with name and page type) below the current folder in JSON format.
 
 Developed and only tested in FitNesse version 20130530
 
 ```json
-{"root": {
+{
  "name": "XebiumTemplate",
  "childs": [
   {
@@ -29,7 +29,7 @@ Developed and only tested in FitNesse version 20130530
   }
  ],
  "type": "Static"
-}}
+}
 ```
 
 # Instalation
