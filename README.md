@@ -31,3 +31,28 @@ Developed and only tested in FitNesse version 20130530
  "type": "Static"
 }}
 ```
+
+# Instalation
+* Download project
+* Build project
+```
+ mvn install
+```
+* Update your pom
+```xml
+    <dependency>
+      <groupId>json-contents</groupId>
+      <artifactId>json-contents</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+```
+* Update your plugins.properties
+```
+...
+Responders=jsonContents:com.jago.fitnesse.jsonContents.SuiteResponder
+```
+# Usage
+```
+http://localhost:8000/XebiumTemplate?jsonContents
+```
