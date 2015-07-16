@@ -1,4 +1,4 @@
-# fitnesse-json-contents
+# fitnesse-enhanced
 This responder prints the directory structure (with name and page type) below the current folder in JSON format.
 
 Developed and only tested in FitNesse version 20130530
