@@ -1,4 +1,4 @@
-package com.jago.fitnesse.jsonContents;
+package com.jago.fitnesse;
 
 import org.json.JSONObject;
 
@@ -9,14 +9,26 @@ import fitnesse.authentication.SecureResponder;
 import fitnesse.http.Request;
 import fitnesse.http.Response;
 import fitnesse.http.SimpleResponse;
+import fitnesse.responders.NotFoundResponder;
 import fitnesse.wiki.PageCrawler;
 import fitnesse.wiki.PageData;
 import fitnesse.wiki.PathParser;
 import fitnesse.wiki.WikiPage;
 import fitnesse.wiki.WikiPagePath;
 
-
-public class SuiteResponder implements SecureResponder {
+/**
+ * Adds a responder that shows current file's child file hierarchy in json format. <br/>
+ * 
+ * <b>Example:</b>
+ * <pre>{
+ * 	"name": "LafC0",
+ * 	"type": "Suite"
+ * }</pre>
+ * 
+ * @author Jagoba Gascón
+ * @since 1.0.0
+ */
+public class FileHierarchyResponder implements SecureResponder {
 
 	private static final String APPLICATION_TYPE = "application/json";
 	private static final String PAGE_CHILDS = "childs";
@@ -28,19 +40,25 @@ public class SuiteResponder implements SecureResponder {
 		return makeResponseWithJson(context, request);
 	}
 
-	private SimpleResponse makeResponseWithJson(FitNesseContext context, Request request) {
-		System.out.println(context.getClass());
-		PageCrawler pageCrawler = context.root.getPageCrawler();
-		String pageName = request.getResource();
-		WikiPagePath resourcePath = PathParser.parse(pageName);
-		WikiPage page = pageCrawler.getPage(context.root, resourcePath);
-
+	private Response makeResponseWithJson(FitNesseContext context, Request request) {
+		WikiPage page = getCurrentWikiPage(context, request);
+		if (page == null)
+			return new NotFoundResponder().makeResponse(context, request);
+		
 		JSONObject directoryStructure = buildJson(page);
 
 		SimpleResponse response = new SimpleResponse();
 		response.setContentType(APPLICATION_TYPE);
 		response.setContent(directoryStructure.toString(1));
 		return response;
+	}
+
+	private WikiPage getCurrentWikiPage(FitNesseContext context, Request request) {
+		PageCrawler pageCrawler = context.root.getPageCrawler();
+		String pageName = request.getResource();
+		WikiPagePath resourcePath = PathParser.parse(pageName);
+		WikiPage page = pageCrawler.getPage(context.root, resourcePath);
+		return page;
 	}
 
 	private JSONObject buildJson(WikiPage page) {
